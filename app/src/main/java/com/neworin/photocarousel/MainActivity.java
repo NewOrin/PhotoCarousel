@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
     private List<ImageView> imageViewList = new ArrayList<>();
     private MyPageAdapter myPageAdapter;
     private LinearLayout mDotLayout;
-    private int currentPosition;
     private String TAG = "MainActivity";
 
     @Override
@@ -78,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                currentPosition = position;
                 updateDot();
             }
 
@@ -98,7 +96,8 @@ public class MainActivity extends AppCompatActivity {
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
+            //切换页面
+            mViewPager.setCurrentItem((mViewPager.getCurrentItem()) + 1);
             //每隔3秒更新一次
             mHandler.sendEmptyMessageDelayed(0, 3000);
         }
