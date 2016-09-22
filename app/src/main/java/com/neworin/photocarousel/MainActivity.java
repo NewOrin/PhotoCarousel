@@ -40,7 +40,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        int[] images = {R.drawable.cheese_1, R.drawable.cheese_2, R.drawable.cheese_3, R.drawable.cheese_4, R.drawable.cheese_5};
+//        int[] images = {R.drawable.cheese_1, R.drawable.cheese_2, R.drawable.cheese_3, R.drawable.cheese_4, R.drawable.cheese_5};
+//        int[] images = {R.drawable.cheese_1, R.drawable.cheese_2, R.drawable.cheese_3, R.drawable.cheese_4};
+        int[] images = {R.drawable.cheese_1, R.drawable.cheese_2, R.drawable.cheese_3};
+//        int[] images = {R.drawable.cheese_1, R.drawable.cheese_2 };
+
         for (int i = 0; i < images.length; i++) {
             imageView = new ImageView(this);
             imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
@@ -51,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         // 多少个轮播广告就多少个点dot
         for (int i = 0; i < imageViewList.size(); i++) {
             View view = new View(this);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(8, 8);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(12, 12);
             if (i != 0) {//第一个点不需要左边距
                 params.leftMargin = 5;
             }
