@@ -1,6 +1,7 @@
 package com.neworin.photocarousel;
 
 import android.content.Context;
+import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -31,6 +32,8 @@ public class PhotoCarousel extends FrameLayout {
     private int delaySeconds = 2000;
     private int count;
     private int currentItem;
+    private Handler mHandler;
+    private boolean isAutoPlay;
 
     public PhotoCarousel(Context context) {
         this(context, null);
@@ -49,6 +52,7 @@ public class PhotoCarousel extends FrameLayout {
     private void initData() {
         mPhotoIVList = new ArrayList<>();
         mDotIVList = new ArrayList<>();
+        mHandler = new Handler();
     }
 
     private void initLayout() {
@@ -84,11 +88,36 @@ public class PhotoCarousel extends FrameLayout {
     }
 
     private void showTime() {
-
+        mViewPager.setAdapter(new CarouselPagerAdapter());
+        mViewPager.setFocusable(true);
+        mViewPager.setCurrentItem(0);
+        currentItem = 1;
+        mViewPager.addOnPageChangeListener(new MyOnPageChangeListener());
+        mHandler.postDelayed(mRunnable, delaySeconds);
     }
+
+    private Runnable mRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (isAutoPlay) {
+                currentItem = currentItem % (count + 1) + 1;
+                if (currentItem == 1) {
+                    mViewPager.setCurrentItem(currentItem, false);
+                    mHandler.post(mRunnable);
+                } else {
+                    mViewPager.setCurrentItem(currentItem);
+                    mHandler.postDelayed(mRunnable, delaySeconds);
+                }
+            } else {
+                mHandler.postDelayed(mRunnable, delaySeconds);
+            }
+        }
+    };
 
     public void setImageRes(int[] imagesRes) {
         initLayout();
+        initImgFromRes(imagesRes);
+        showTime();
     }
 
     class CarouselPagerAdapter extends PagerAdapter {
@@ -132,12 +161,8 @@ public class PhotoCarousel extends FrameLayout {
                 }
             }
         }
-        private Runnable mRunnable = new Runnable() {
-            @Override
-            public void run() {
 
-            }
-        };
+
         @Override
         public void onPageScrollStateChanged(int state) {
             switch (state) {
@@ -148,10 +173,15 @@ public class PhotoCarousel extends FrameLayout {
                         mViewPager.setCurrentItem(1, false);
                     }
                     currentItem = mViewPager.getCurrentItem();
+                    isAutoPlay = true;
                     break;
                 }
                 case 1: {
-
+                    isAutoPlay = false;
+                    break;
+                }
+                case 2: {
+                    isAutoPlay = true;
                     break;
                 }
             }
